@@ -1,0 +1,10 @@
+# macOS system files
+.DS_Store
+
+# JMeter log files
+*.log
+*.jtl
+*.bak
+
+# Temporary files
+*.tmp
