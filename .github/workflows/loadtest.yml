@@ -1,0 +1,37 @@
+name: JMeter Load Test
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  jmeter-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Download JMeter
+        run: |
+          wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
+          tar -xzf apache-jmeter-5.6.3.tgz
+
+      - name: Run JMeter Tests
+        run: |
+          ./apache-jmeter-5.6.3/bin/jmeter -n -t jmeter/login_and_products_test.jmx -l jmeter/results.jtl -j jmeter/jmeter.log
+          ./apache-jmeter-5.6.3/bin/jmeter -g jmeter/results.jtl -o report
+
+      - name: Upload Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jmeter-report
+          path: report

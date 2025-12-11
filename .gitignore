@@ -8,3 +8,7 @@
 
 # Temporary files
 *.tmp
+
+# JMeter generated files
+*.jtl
+report/
